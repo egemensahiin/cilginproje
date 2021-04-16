@@ -1,5 +1,8 @@
 #!/usr/bin/env python3.7
 
+from playsound import playsound
+from pygame import mixer
+from pygame.mixer import music
 import npyscreen
 import random
 import os
@@ -33,6 +36,9 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
                 oynat = "H"
 
     def oyunun_kendisi(self):
+        mixer.init()
+        music.load('ruzgar.wav')
+        music.play()
         self.mesaj_taslak("\nUzandigin yerden yavasca kalkiyorsun...\
                            \nIcınde bulundugun oda karanlik ve nerede olduguna dair hicbir fikrin yok....\
                            \nGozlerin karanlıga yavasca alistiktan sonra, duvardaki isik anahtarini, masadaki silahi ve kapi kolunu goruyorsun...")
@@ -52,6 +58,8 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
         # Silahi al = 1
         # Kapiyi acamaya calis = 2
 
+        music.stop()
+        music.unload()
         if sectigimiz == 0:
         # Eger anahtari acmayi sectiysek:
             self.mesaj_taslak("\nZorla yerinden kalkıp anahtara ulasiyorsun.\
@@ -99,14 +107,20 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
                                        \nOguzhan: Kanka ben kedisi medisi olan adamim yapma bak. Chester var mi kanka?? Yoksa baska beyaz filtre de olur.\
                                        \nAnil: Sacmalama abi tabii ki de beni seciceksin. Bi de dusunuyo musun bunu gercekten. Silahi ver abi ba...")
 
-                    anil_aksu_secim = self.secenek_taslak(secenekler = ["Lafını bitirmesini beklemeden Anil Aksu'yu iki kez vur ve infaz et.",
-                                                                        "42 dakika boyunca neden Anil Aksu'yu vurmaman gerektigini dinle."])
+                    buyuk_secim = self.secenek_taslak(secenekler = ["Lafını bitirmesini beklemeden Anil Aksu'yu iki kez vur ve infaz et.",
+                                                                    "42 dakika boyunca neden Anil Aksu'yu vurmaman gerektigini dinle.",
+                                                                    "Oğuzun zeytin gözlerine dalıyorsun ve silahı diğerlerine doğrultmaya başlıyorsun.",
+                                                                    "Oğuzun yaka cebindeki açık Chester paketini farkediyorsun ve Oğuzu infaz ediyorsun.",
+                                                                    "İleride birlikte oyun oynamak düşüncesiyle Yavuzu kurtarıyorsun.",
+                                                                    "Sessizliğe gömülen Yavuzu iki kurşunla sonsuz sessizliğe kavuşturuyorsun."])
                     # hoparloru dinleyince ilk asamada anil aksuyla ilgili secimler goruyoruz.
                     # Anili vur = 0
                     # Anili dinle = 1
 
-                    if anil_aksu_secim == 0:
+                    if buyuk_secim == 0:
                     # anil aksuyu infaz ettik.
+                        music.load('gun_shot.wav')
+                        music.play(2)
                         self.mesaj_taslak("\nAnil Aksu'ya yaptigini gorunce isin arkasindaki master mind'in kani dondu...\
                                            \nNe diyecegini bilemez bir haldeki master mind'in kekeleyerek konusmaya basladigini duydun:\
                                            \n- Kanka sen ne cesit bi manyaksin? Hayrettin hoca bile tahmin edemezdi bunu seninle ugrasilmaz.")
@@ -129,10 +143,12 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
                                            \n\nBastan beri kapali olan kapi, Yeni Yildiz Kiraathanesine aciliyordu.\
                                            \nBatak masasina oturup sabaha kadar esli batak oynadiniz. Sansliydin, esin Mertcan'di.\
                                            \nAnil ise gokyuzunden bakıp soyle diyordu: Salak bunlar ya valeye as dusulur mu?...")
+                        music.unload()
+                        music.stop()
 
                         self.oyun_sonu(kazanc_durumu = "Tebrikler, kazandiniz!", ascii_resim = "tatli_kurtulus.txt")
 
-                    else:
+                    elif buyuk_secim == 1:
                     # anil aksuyu dinledin...
                         self.mesaj_taslak("\nLafini bitirene kadar Anil Aksu'yu dinlemeye calistin...\
                                            \nNiyetin yalnizca kibar olmakti.. Anil'in konusmasini bolmek istemedin..\
@@ -145,8 +161,85 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
 
                         self.oyun_sonu(kazanc_durumu = "Uzgunum, kaybettiniz...", ascii_resim = "bos_olum.txt")
 
+                    elif buyuk_secim == 2:
+                    # oğuz kurtulus
+                        self.mesaj_taslak("\nOğuzun zeytin gözlerine uzun uzun baktıktan sonra, bu zeytin gözleri bir daha görememe\
+                                           \nkorkusuna kapılmaya başlıyorsun. Elindeki silahı önce Yavuz'a daha sonra Anıl'a doğrultarak\
+                                           \nbirer el ateş ediyorsun. Yavuz ve Anıl acı şekilde can verirlerken yavaşça Oğuza yaklaşıyorsun.\
+                                           \nKafanın içinde bir yerlerde taha duymaz caz şarkısının ezgilerini duymaya başlıyorsun. Oğuzu bağlı olduğu\
+                                           \nsandalyeden kurtardıktan sonra odanın açılan kapısından dışarı çıkıp, Egemen'lere giderek balkonda\
+                                           \nsigara içiyorsunuz. Akşamın son saatlerine kadar süren muhabbetlerde, Egemen'in 'Yavuz napıyor lan\
+                                           \nacaba sorusuna' suskun gözlerle bakıyor ve sigaranızdan bir nefes daha çekiyorsunuz...")
+
+                        #TODO duygusal müzik ekle
+                        self.oyun_sonu(kazanc_durumu = "Tebrikler, kazandınız?..", ascii_resim = "tatsiz_kurtulus.txt")
+
+                    elif buyuk_secim == 3:
+                    # oğuz infaz
+                        music.load('gun_shot.wav')
+                        music.play(2)
+                        self.mesaj_taslak("\nKafandaki çılgın düşünceler arasında boğusurken, Oğuzun yaka cebindeki Chesterı görüyorsun. Yıllardır\
+                                           \nyaka cebinde sigara taşıyan insanlarla dalga geçtikten sonra, Oğuzun yaka cebindeki sigara seni sinir\
+                                           \nkrizine sürüklüyor. Oğuza yaklaşıp 'YETER ULANN YETEERR' diyerek Oğuza iki el ateş ediyorsun. Oğuzun\
+                                           \ninfazı karşısında kanları dolan Anıl ve Yavuz ortamın hafası değişssin diye Gwent muhabbeti yapmaya\
+                                           \nbaşlıyorlar. ")
+                        self.mesaj_taslak("\nOdanın kapısının açıldığını duyuyorsun. Gölgeler içindeki kapıda bekleyen adam yavaşça sana yaklaşıyor...\
+                                           \nBu mastermind olmalı. Master mind yaklaştıkça burnuna Winston kokusu geliyor.\
+                                           \nHayrettin Hoca, Winston kokusu... Hepsi sonunda bir anlam ifade etmeye başlıyor. Evet bu o...\
+                                           \nMERTCAN YETİK.\n\
+                                           \nOğuzun cesedine yaklaşıp, İyi oldu, bana CS'de hep bağrırdı' diyor.\
+                                           \nDiğerlerini çözüp odadan çıkıyorsunuz. Oğuzun anısına Almira'da son bir sigara içiyorsunuz.\
+                                           \nAma size Oğuzu hatırlatması için hiçbiriniz paketleri eve götürmüyorsunuz...")
+
+                        #TODO Logo çetrefilli/çarpıcı son olacak ascii değiştir.
+                        #TODO Duygusal müzik ekle.....
+                        music.unload()
+                        music.stop()
+                        self.oyun_sonu(kazanc_durumu = "Tebrikler, kazandınız?..", ascii_resim = "tatsiz_kurtulus.txt")
+
+                    elif buyuk_secim == 4:
+                    # yavuz kurtar
+                        music.load('gun_shot.wav')
+                        music.play(2)
+                        self.mesaj_taslak("\nElindeki silahın ağırlığı kollarını uyuşturmaya başlıyor. Uyuşukluğun tanımı içerisinde sonsuz bir yolculuğa \
+                                           \nçıkarken, düşüncelerinin arkasındaki her kapıdan Yavuzun “ kupkuru bir insan “ olması fikri çıkıyor...\
+                                           \nBu kuruluğu kaybetmek istemediğini fark ediyorsun.  Gözlerini, durmadan burnunu çeken Yavuz’a döndürerek silahınla \
+                                           \nyüzlerine bakmadanOğuz ve Anıl’a bakmadan ateş ediyorsun.")
+                        self.mesaj_taslak("\nDiğer arkadaşların yerlere yığılırken, Yavuz’u bağlı olduğu sandalyeden kurtarıyorsun..\
+                                           \nYavuz’un diğer arkadaşlarının kaybına olan umursamazlığına şahit olarak odadan çıkarken,\
+                                           \naklında Yavuz’la geceler boyunca Gwent oynayacağın düşüncesi seni mutlu ediyor.")
+                        self.mesaj_taslak("\nAylar geçse de Yavuz’un uyku düzeni ve senin uyku düzeninin bir türlü uyuşmadığını farkediyorsun...\
+                                           \nGeceler boyu Yavuz’un oyuna girmesini beklerken uyuya kalıyorsun. Bir süre sonra farkediyorsunki kuru bir adam için\
+                                           \nıslak arkadaşlarını feda etmişsin. Hayatın boyunca bunun vicdan azabını çekiyorsun.\n\
+                                           \nBir süre sonra uykuya direnen gözlerini sonsuz bir uykuya kapatıyorsun...")
+                        music.unload()
+                        music.stop()
+                        self.oyun_sonu(kazanc_durumu = "Uzgunum, kaybettiniz.", ascii_resim = "bos_olum.txt")
+
+                    elif buyuk_secim == 5:
+                    # yavuz infaz
+                        music.load('gun_shot.wav')
+                        music.play(2)
+                        self.mesaj_taslak("\nOdada kimi seçeceğini düşünüp kafanda türlü türlü düşüncelerle boğuşurken, Yavuz’un her kafeye gittiğinizde su siparişi\
+                                           \nverdiği aklına geliyor. Çünkü o kuru bir adam, kuru doğmuş. Dünyanın ıslaklığından nasibini almamış\
+                                           \nbu adamın daha fazla su siparişi verebileceği fikrine karşı düşmanlaşıyorsun.\n\
+                                           \nYavuz’un yanına gidip silahı kafasına dayadıktan sonra, Yavuz’un 'Ortak haxball oynayalım mı ?..' sözlerini söylediğini duyarken,\
+                                           \ntetiğe asılıyorsun. Yavuz acı şekilde can verirken, diğer arkadaşlarını çözüyorsun.")
+                        self.mesaj_taslak("\nOdanın kapısının açıldığını görüyorsunuz. Gölgeler içinde olan bir adamın kapıdan içeriye girdiğini görüyorsun.\
+                                           \nAdamın Winston koktuğunun farkına varıyorsun. Hayrettin Hoca, Winston… Mastermind’İn kim olduğunu o an anlıyorsun.\
+                                           \nMERTCAN YETİK. Yanınıza gelip, hiçbir şey olmamış gibi Almira’ya gitmek istediğini söylüyor.\
+                                           \nKalkıp Almira’ya gidip akşama kadar çay–sigara yapıyorsunuz.")
+                        self.mesaj_taslak("\nKalkarken telefonundaki okunmamış mesaj bildirimini açıyorsun.\
+                                           \nMesaj, olaylardan önce Yavuz’dan gelmiş: \
+                                           \n'Ortak dışarı çıkarsanız beni ara, gelirim…'")
+                        music.unload()
+                        music.stop()
+                        self.oyun_sonu(kazanc_durumu = "Tebrikler, kazandınız?..", ascii_resim = "tatsiz_kurtulus.txt")
+
                 else:
                 # hoparlore ates et blogundayiz.
+                    music.load('gun_shot.wav')
+                    music.play()
                     self.mesaj_taslak("\nHoparlore ates ettin. Mermilerinden birini çoktan harcadın...\
                                        \nNe yapacağını çözmeye çalışıyorsun fakat belki de bunu öğrenmek için tek şansını az önce harcadın...\
                                        \nKimsenin ne yapacağını bilmediği bir odada arkadaşlarının küfürleri kulağında yankılanıyordu.\
@@ -155,14 +248,20 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
                                        \nonları ölüme terkederek kafana sıktın...\
                                        \nAma artık şunu biliyordun ki,\
                                        \nHoparlore sıktığın o mermi, son mermi değildi...")
-                    self.oyun_sonu('bos_olum.txt', 'Uzgunum, olabilecek en kötü şekilde kaybettiniz..')
+                    music.unload()
+                    music.stop()
+                    self.oyun_sonu(kazanc_durumu = 'Uzgunum, olabilecek en kötü şekilde kaybettiniz..', ascii_resim = 'bos_olum.txt')
 
             if anahtar_secimi == 1:
             # silahla cama ates et
+                music.load('gun_shot.wav')
+                music.play()
                 self.mesaj_taslak("\nSilahi aldin ve arkadaslarini kurtarmak umuduyla cama ates ettin...\
                                    \nFakat bilmedigin bir sey vardi...\
                                    \n\nCam kursun gecirmezdi ve seken kursun kasiklarina isabet etti..\
                                    \nCinsel organindan vurulmus halde kan kaybindan oldun...")
+                music.unload()
+                music.stop()
 
                 self.oyun_sonu(kazanc_durumu = "Uzgunum, kaybettiniz...", ascii_resim = "bos_olum.txt")
 
@@ -198,6 +297,8 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
                                                                            "Anili sacindan tut, gotunden sik.."])
             if anili_sikmek_yada_sikmemek == 0:
                 #silahi anila verdik
+                music.load('gun_shot.wav')
+                music.play()
                 self.mesaj_taslak("\nCilgin dusunceler vucudunu ele gecirirken bir anda kendini gozleri kapali elleri bos bir halde buldun...\
                                    \nGozlerini acip karsiya baktiginda Anili cozup silahi verdigini gordun.. Daha da kotusu Anil pis kahkahalar\
                                    \nicinde silahi sana dogrultuyordu..\
@@ -205,10 +306,14 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
                                    \nOguza dogrultup onu infaz etti.. \"Iyi LOL oynardi ama artik benden iyi degil HAHAHHAHAHAH\"")
                 self.mesaj_taslak("\nAnil silahi sana dogrulttu.. Yeni ateslenmis silahin namlusundaki sicakligi hissediyordun..\
                                    \nOguzun kani yerleri kirmiziya boyamisti... Kan golundeki yansimadan kendine son bir kez baktin..")
+                music.unload()
+                music.stop()
                 yalvarmak_kufretmek = self.secenek_taslak(secenekler = ["Korkusuzca Anil'a kufur et.",
                                                                         "Canin icin Anil'a yalvar."])
                 if yalvarmak_kufretmek == 0:
                     # anila sovduk. haketti pust
+                    music.load('gun_shot.wav')
+                    music.play()
                     self.mesaj_taslak("\nIcindeki delikanliliga guvenerek agzindan dokulen su kelimelere musade ettin: \
                                        \n- Keske seni sacindan kavrayip gotunden sikseydim amk pezevengi pust niye vuruyosun adami got!!\
                                        \n\
@@ -218,11 +323,14 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
                     self.mesaj_taslak("\nAnlam veremiyordun.. Anil ise Yavuzun cesedine bakıp KAHKAHKAH guluyordu..\
                                        \nSana dogru dondu ve \"O beni Gwent'te yenebilirdi... Ama sen yenemezsin HAHAHAH. Hadi gidelim de Gwent oynayalım..\"\
                                        \nGwent konusundaki yeteneksizliginin hayatini kurtaracagini bilemezdin...")
-
+                    music.unload()
+                    music.stop()
                     self.oyun_sonu(kazanc_durumu = "Tebrikler, kazandiniz!", ascii_resim = "tatsiz_kurtulus.txt")
 
                 if yalvarmak_kufretmek == 1:
                     # anila yalvardik.
+                    music.load('gun_shot.wav')
+                    music.play()
                     self.mesaj_taslak("\nSilahin arkasinda duran Anil'a dogru bakarken goz yaslarina hakim olamiyordun...\
                                        \nYasamak istedigin icin dizlerinin uzerine cokerek yalvarmaya basliyorsun... \"Lutfen! Yasamak istiyorum!\"\
                                        \nSana Age of Empires'da hem odun ve altin attim, beni infaz edemezsin!!\
@@ -231,7 +339,8 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
                     self.mesaj_taslak("\nOguzla beraber cennette \"Ne kadar bos yasadik amk al iste olduk simdi\" geyigi yaparken Anil ve Yavuzu izliyordunuz..\
                                        \nUzuntunuz bir anda gecmisti cunku onlar sizden daha bostu ve bu isin arkasinda kimin oldugunu bile sorgulamadan\
                                        \nkalkip Gwent oynamaya gittiler...")
-
+                    music.unload()
+                    music.stop()
                     self.oyun_sonu(kazanc_durumu = "Uzgunum, kaybettiniz!", ascii_resim = "bos_olum.txt")
 
             elif anili_sikmek_yada_sikmemek == 1:
