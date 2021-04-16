@@ -13,10 +13,16 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
             wid, hei = os.get_terminal_size()[0:2]
             with open("logo.txt", "r") as logomuz:
                 logoStr = logomuz.read()
+            with open("giris_logo.txt", "r") as giris_logosu:
+                girisLogoStr = giris_logosu.read()
+            mixer.init()
+            music.load('intro.wav')
+            music.play()
             self.mesaj_taslak("\nDaha iyi bir deneyim için,\
                                \nTerminalinizi tam ekran yapmanızı\
                                \nTavsiye ederiz.", relx = int(wid / 2 - 16), rely = int(hei / 2 - 2))
             wid, hei = os.get_terminal_size()[0:2]
+            self.mesaj_taslak(f"{girisLogoStr}", relx = int(wid / 2 - 45), rely = int(hei / 2 - 32))
             self.mesaj_taslak(f"{logoStr}\
                                \n\nTum haklari Linus Torvalds tarafindan guvenceye alinmistir.\
                                \nYapimci Egemens Games\
@@ -31,6 +37,8 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
             baslasin_mi = self.secenek_taslak(["Oyunu Baslat!",
                                                "Oyundan Cik...",
                                                "Multiplayer (Cok Yakinda!!!)"])
+            music.unload()
+            music.stop()
 
             if baslasin_mi == 0:
                 self.oyunun_kendisi()
@@ -38,7 +46,6 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
                 oynat = "H"
 
     def oyunun_kendisi(self):
-        mixer.init()
         music.load('ruzgar.wav')
         music.play()
         self.mesaj_taslak("\nUzandigin yerden yavasca kalkiyorsun...\
@@ -347,6 +354,8 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
 
             elif anili_sikmek_yada_sikmemek == 1:
                 #anili siktik...
+                music.load('gun_shot.wav')
+                music.play(2)
                 self.mesaj_taslak("\nCilgin dusuncelerinin kurbani olmaya basliyorsun... Elindeki silahi yavasca yere birakip Anila yaklasiyorsun...\
                                    \nO guzel sirma saclari sana hayırlı bir sehzade verebilecegi duygusuna engel olamiyorsun...\
                                    \nAnil'in aci cigliklari senin kulagina bir muzik gibi geliyor... Anil'in sacini eline dolayip, gozlerini kapiyorsun...\
@@ -366,7 +375,8 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
                                    \nYavuzun bu bencil ve umursamaz tavrina dayanamayan Mertcan cebinde duran kucuk 45likle Yavuzu delik desik ediyor.\
                                    \nKapidan cikip gittiklerinde izlerini kaybediyorsun ama biliyorsun ki \
                                    \nMertcanlarin evin arkasinda sigara icip Imerin CS'de ne kadar kotu oldugundan bahsediyorlar...")
-
+                music.unload()
+                music.stop()
                 self.oyun_sonu(kazanc_durumu = "Uzgunum, kaybettiniz!", ascii_resim = "bos_olum.txt")
 
         elif sectigimiz == 2:
