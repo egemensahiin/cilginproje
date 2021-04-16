@@ -9,18 +9,21 @@ import os
 
 class OldurmeUygulamasi(npyscreen.NPSAppManaged):
     def main(self):
-        wid, hei = os.get_terminal_size()[0:2]
         oynat = 'E'
         while oynat == 'E':
+            wid, hei = os.get_terminal_size()[0:2]
             with open("logo.txt", "r") as logomuz:
                 logoStr = logomuz.read()
-
+            self.mesaj_taslak("\nDaha iyi bir deneyim için,\
+                               \nTerminalinizi tam ekran yapmanızı\
+                               \nTavsiye ederiz.", relx = int(wid / 2 - 32), rely = int(hei / 2 - 3))
+            wid, hei = os.get_terminal_size()[0:2]
             self.mesaj_taslak(f"{logoStr}\
-                              \n\nTum haklari Linus Torvalds tarafindan guvenceye alinmistir.\
-                              \nYapimci Egemens Games\
-                              \nKurgu: Gokhan Egemen Karaca\
-                              \nCode Development: Egemen Sahin\
-                              \nCok sevdigimiz arkadaslarimiza hitafen :)) Onlar kendini biliyor...", relx = int(wid / 2 - 45), rely = int(hei / 2 - 19))
+                               \n\nTum haklari Linus Torvalds tarafindan guvenceye alinmistir.\
+                               \nYapimci Egemens Games\
+                               \nKurgu: Gokhan Egemen Karaca\
+                               \nCode Development: Egemen Sahin\
+                               \nCok sevdigimiz arkadaslarimiza hitafen :)) Onlar kendini biliyor...", relx = int(wid / 2 - 45), rely = int(hei / 2 - 19))
             self.mesaj_taslak("\nOyun içinde seçenekler arasında dolaşmak için yukarı aşağı ok tuşlarını kullanın.\
                                \nİstediğiniz seçeneği seçmek için Boşluk veya Entera basınız.\
                                \nHikayeye devam etmek için Tab+Entera basınız.\n\
