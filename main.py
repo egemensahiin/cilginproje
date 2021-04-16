@@ -1,6 +1,5 @@
 #!/usr/bin/env python3.7
 
-from playsound import playsound
 from pygame import mixer
 from pygame.mixer import music
 import npyscreen
@@ -16,7 +15,7 @@ class OldurmeUygulamasi(npyscreen.NPSAppManaged):
                 logoStr = logomuz.read()
             self.mesaj_taslak("\nDaha iyi bir deneyim için,\
                                \nTerminalinizi tam ekran yapmanızı\
-                               \nTavsiye ederiz.", relx = int(wid / 2 - 32), rely = int(hei / 2 - 3))
+                               \nTavsiye ederiz.", relx = int(wid / 2 - 16), rely = int(hei / 2 - 2))
             wid, hei = os.get_terminal_size()[0:2]
             self.mesaj_taslak(f"{logoStr}\
                                \n\nTum haklari Linus Torvalds tarafindan guvenceye alinmistir.\
